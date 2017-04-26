@@ -1,6 +1,5 @@
 all: main.c libcomponent.so libpower.so libresistance.so
-	gcc -o electrotest main.c -lm -L./lib -lcomponent -lpower -lresistance -Wl,-rpath,./lib
-lib: libpower.so
+	gcc -o electrotest main.c -L./lib -lcomponent -lpower -lresistance -Wl,-rpath,./lib -lm
 libcomponent.so: libcomponent.c
 	mkdir -p lib
 	gcc -c -fPIC libcomponent.c
@@ -16,7 +15,7 @@ libresistance.so: calc_resistance.c
 	gcc -shared -fPIC -o ./lib/libresistance.so calc_resistance.o
 install: main.c libcomponent.so libpower.so libresistance.so
 	cp -f lib/libcomponent.so lib/libpower.so lib/libresistance.so /usr/lib
-	gcc -o /usr/bin/electrotest main.c -lm -L/usr/lib -lcomponent -lpower -lresistance -Wl,-rpath,/urs/lib
+	gcc -o /usr/bin/electrotest main.c -L/usr/lib -lcomponent -lpower -lresistance -Wl,-rpath,./lib -lm
 uninstall: 
 	rm -f /usr/bin/electrotest
 	rm -f /usr/lib/libcomponent.so /usr/lib/libpower.so /usr/lib/libresistance.so
